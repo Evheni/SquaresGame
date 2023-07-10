@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="SquaresGame.Views.CellView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             mc:Ignorable="d"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
+             xmlns:services="clr-namespace:SquaresGame.Services"
+             MinHeight="20" 
+             MinWidth="20"
+             Height="{Binding Width, RelativeSource={RelativeSource Self}}">
+    <UserControl.Resources>
+        <s:Boolean x:Key="True">True</s:Boolean>
+        <s:Boolean x:Key="False">False</s:Boolean>
+        <SolidColorBrush x:Key="BorderBrush" Color="{Binding SelectedColor}" />
+    </UserControl.Resources>
+    <Border
+        BorderThickness="2"
+        BorderBrush="{DynamicResource BorderBrush}"
+        services:MouseObserver.Observe="True"
+        services:MouseObserver.ObservedMouseOver="{Binding IsSelected, Mode=OneWayToSource}">
+        <Border.Background>
+            <SolidColorBrush Color="{Binding CurrentColor}" />
+        </Border.Background>
+        <Border.InputBindings>
+            <MouseBinding MouseAction="LeftClick" Command="{Binding ClickedCommand}" CommandParameter="{StaticResource True}" />
+            <MouseBinding MouseAction="RightClick" Command="{Binding ClickedCommand}" CommandParameter="{StaticResource False}" />
+        </Border.InputBindings>
+    </Border>
+
+</UserControl>

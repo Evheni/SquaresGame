@@ -1,8 +1,9 @@
 ﻿using SquaresGame.Interfaces;
+using SquaresGame.Models;
 
-namespace SquaresGame.Models;
+namespace SquaresGame.Services;
 
-internal class ScoreKeeper : IScoreKeeper<Move>
+public class ScoreKeeper : IScoreKeeper<Move>
 {
     public ScoreKeeper(Player player)
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace SquaresGame.Models;
-internal class Game<TBoard, TMove> 
+public class Game<TBoard, TMove> 
     where TBoard : IBoard<TMove>
     where TMove : IMove
 {
@@ -21,6 +21,16 @@ internal class Game<TBoard, TMove>
     }
 
     public TBoard Board { get; }
+
+    public int GetScore(Player player)
+    {
+        if (_scoreKeepers.TryGetValue(player, out var scoreKeeper)) 
+        {
+            return scoreKeeper.Score;
+        }
+
+        return 0;
+    }
 
     public void AddPlayer(Player player)
     {

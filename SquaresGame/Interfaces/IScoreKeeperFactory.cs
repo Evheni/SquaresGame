@@ -2,7 +2,7 @@
 
 namespace SquaresGame.Interfaces;
 
-internal interface IScoreKeeperFactory
+public interface IScoreKeeperFactory
 {
     IScoreKeeper<TMove> CreateScoreKepper<TMove>(Player player) where TMove : IMove;
 }

@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace SquaresGame.Models;
 
-internal class RectangularBoard : IBoard<Move>
+public class RectangularBoard : IBoard<Move>
 {
     private readonly Marker[,] _field;
     public RectangularBoard(int width, int height)
@@ -18,6 +18,8 @@ internal class RectangularBoard : IBoard<Move>
         _field = new Marker[Width, Height];
         CleanTheField();
     }
+
+    public event EventHandler<(int X, int Y)> MarkerUpdated;
 
     public int Width { get; }
     public int Height { get; }
@@ -38,18 +40,26 @@ internal class RectangularBoard : IBoard<Move>
         get => this[point.X, point.Y];
     }
 
+    public void InitStart(int x, int y, in Marker marker)
+    {
+        _field[x, y] = marker;
+        OnMarkerUpdated(x, y);
+    }
+
     public void ApplyMove(Move move, in Marker marker)
     {
-        if (move.Position.X < 0 || move.Position.X >= Width
-            || move.Position.Y < 0 || move.Position.Y >= Height
-            || move.Height < 0 || move.Position.Y + move.Height >= Height
-            || move.Width < 0 || move.Position.X + move.Width >= Width) throw new ArgumentOutOfRangeException(nameof(move));
+        if (move.Position.X < 0 || move.Position.Y < 0 
+            || move.Height < 0 || move.Position.Y + move.Height > Height
+            || move.Width < 0 || move.Position.X + move.Width > Width) throw new ArgumentOutOfRangeException(nameof(move));
 
         for (var i = 0; i < move.Width; i++)
         {
             for (var j = 0; j < move.Height; j++)
             {
-                _field[move.Position.X + i, move.Position.Y + j] = marker;
+                var x = move.Position.X + i;
+                var y = move.Position.Y + j;
+                _field[x, y] = marker;
+                OnMarkerUpdated(x, y);
             }
         }
     }
@@ -65,6 +75,11 @@ internal class RectangularBoard : IBoard<Move>
 
     public bool IsEmpty(int x, int y)
         => _field[x, y] == Marker.Empty;
+
+    private void OnMarkerUpdated(int x, int y)
+    {
+        MarkerUpdated?.Invoke(this, (x, y));
+    }
 
     private void CleanTheField()
     {

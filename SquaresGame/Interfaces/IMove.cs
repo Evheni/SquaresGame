@@ -1,6 +1,6 @@
 ﻿namespace SquaresGame.Interfaces;
 
-internal interface IMove
+public interface IMove
 {
     int X { get; }
     int Y { get; }

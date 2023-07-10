@@ -12,12 +12,12 @@ internal class MoveValidator : IMoveValidator<RectangularBoard, Move>
         && IsEmpty(board, move);
 
     private static bool IsPositionValid(RectangularBoard board, in Move move)
-        => move.X < 0 || move.X >= board.Width
-        || move.Y < 0 || move.Y >= board.Height;
+        => !(move.X < 0 || move.X >= board.Width
+        || move.Y < 0 || move.Y >= board.Height);
 
     private static bool IsSizeValid(RectangularBoard board, in Move move)
-        => move.Height < 0 || move.Position.Y + move.Height >= board.Height
-        || move.Width < 0 || move.Position.X + move.Width >= board.Width;
+        => !(move.Height < 0 || move.Position.Y + move.Height > board.Height
+        || move.Width < 0 || move.Position.X + move.Width > board.Width);
 
     private static bool IsAttached(RectangularBoard board, in Move move, in Marker marker)
     {
@@ -38,16 +38,16 @@ internal class MoveValidator : IMoveValidator<RectangularBoard, Move>
             var y = move.Y - 1;
             for (var i = 0; i < move.Width; i++)
             {
-                if (board.IsMarked(y, move.X + i, marker))
+                if (board.IsMarked(move.X + i, y, marker))
                 {
                     return true;
                 }
             }
         }
 
-        if (move.X + move.Width < board.Width - 1)
+        if (move.X + move.Width < board.Width)
         {
-            var x = move.X + move.Width + 1;
+            var x = move.X + move.Width;
             for (var i = 0; i < move.Height; i++)
             {
                 if (board.IsMarked(x, move.Y + i, marker))
@@ -57,12 +57,12 @@ internal class MoveValidator : IMoveValidator<RectangularBoard, Move>
             }
         }
 
-        if (move.Y + move.Height < board.Height - 1)
+        if (move.Y + move.Height < board.Height)
         {
-            var y = move.Y + move.Height + 1;
+            var y = move.Y + move.Height;
             for (var i = 0; i < move.Width; i++)
             {
-                if (board.IsMarked(y, move.X + i, marker))
+                if (board.IsMarked(move.X + i, y, marker))
                 {
                     return true;
                 }
@@ -78,7 +78,7 @@ internal class MoveValidator : IMoveValidator<RectangularBoard, Move>
         {
             for (var j = 0; j < move.Height; j++)
             {
-                if (board.IsEmpty(move.Position.X + i, move.Position.Y + j))
+                if (!board.IsEmpty(move.Position.X + i, move.Position.Y + j))
                 {
                     return false;
                 }

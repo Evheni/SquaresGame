@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="SquaresGame.Views.PlayerInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:SquaresGame.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewmodels:DesignPlayerViewModel, IsDesignTimeCreatable=True}">
+    <StackPanel Orientation="Vertical" Margin="10">
+        <TextBlock Text="{Binding Name}" FontSize="18">
+            <TextBlock.Foreground>
+                <SolidColorBrush Color="{Binding Color}" />
+            </TextBlock.Foreground>
+        </TextBlock>
+        <TextBlock FontSize="12">
+            <Run Text="Score: " />
+            <Run Text="{Binding Score, Mode=OneWay}" />
+            <Run Text=" points" />
+        </TextBlock>
+    </StackPanel>
+</UserControl>

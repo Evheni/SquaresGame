@@ -1,10 +1,12 @@
 ﻿using SquaresGame.Models;
+using System;
 using System.Drawing;
 
 namespace SquaresGame.Interfaces;
 
-internal interface IBoard<TMove> where TMove : IMove
+public interface IBoard<TMove> where TMove : IMove
 {
+    event EventHandler<(int X, int Y)> MarkerUpdated;
     Marker this[int x, int y] { get; }
     Marker this[in Point point] { get; }
     void ApplyMove(TMove move, in Marker marker);
